@@ -46,22 +46,17 @@ namespace SquareChaser
         new SoundPlayer speedSound = new SoundPlayer(Properties.Resources.speedSound);
         new SoundPlayer pointSound = new SoundPlayer(Properties.Resources.pointSound);
         new SoundPlayer introSound = new SoundPlayer(Properties.Resources.introSound);
-
         public squareChaser()
         {
             InitializeComponent();
 
             //Spawn speed boost and point square randomly.
-            pointSquare.X = randGen.Next(this.Width);
-            pointSquare.Y = randGen.Next(this.Height);
-
-            speedCircle.X = randGen.Next(5, 396);
-            speedCircle.Y = randGen.Next(5, 396);
+            NewPointSquarePosition();
+            NewSpeedCirclePosition();
 
             //Play intro sound. 
             introSound.Play();
         }
-
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             //Move player 1.
@@ -102,35 +97,31 @@ namespace SquareChaser
             if (player1.IntersectsWith(speedCircle) && player1Speed < 8)
             {
                 player1Speed++;
-                speedCircle.X = randGen.Next(this.Width);
-                speedCircle.Y = randGen.Next(this.Height);
+                NewSpeedCirclePosition();
                 speedSound.Play();
             }
             if (player2.IntersectsWith(speedCircle) && player2Speed < 8)
             {
                 player2Speed++;
-                speedCircle.X = randGen.Next(this.Width);
-                speedCircle.Y = randGen.Next(this.Height);
+                NewSpeedCirclePosition();
                 speedSound.Play();
             }
             //Give points and randomize spawn of point squares.
             if (player1.IntersectsWith(pointSquare))
             {
                 player1Score++;
-                pointSquare.X = randGen.Next(this.Width);
-                pointSquare.Y = randGen.Next(this.Height);
+                NewSpeedCirclePosition();
                 player1ScoreLabel.Text = $"{player1Score}";
                 pointSound.Play();
             }
             if (player2.IntersectsWith(pointSquare))
             {
                 player2Score++;
-                pointSquare.X = randGen.Next(this.Width);
-                pointSquare.Y = randGen.Next(this.Height);
+                NewSpeedCirclePosition();
                 player2ScoreLabel.Text = $"{player2Score}";
                 pointSound.Play();
             }
-            //Check for a winner and stop the game.
+            //Check for a winner, display the scores and stop the game.
             if (player1Score == 5)
             {
                 winnerLabel.Text = $"Player 1 wins \n{player1Score} - {player2Score}";
@@ -144,7 +135,6 @@ namespace SquareChaser
 
             Refresh();
         }
-
         private void squareChaser_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -206,7 +196,6 @@ namespace SquareChaser
                     break;
             }
         }
-
         private void squareChaser_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.FillRectangle(whiteBrush, pointSquare);
@@ -215,6 +204,16 @@ namespace SquareChaser
             e.Graphics.FillRectangle(greenBrush, player2);
             e.Graphics.DrawRectangle(blackPen, player1);
             e.Graphics.DrawRectangle(blackPen, player2);
+        }
+        public void NewSpeedCirclePosition()
+        {
+            speedCircle.X = randGen.Next(this.Width - speedCircle.Width);
+            speedCircle.Y = randGen.Next(this.Height - speedCircle.Height);
+        }
+        public void NewPointSquarePosition()
+        {
+            pointSquare.X = randGen.Next(this.Width - pointSquare.Width);
+            pointSquare.Y = randGen.Next(this.Height - pointSquare.Height);
         }
     }
 }
