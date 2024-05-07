@@ -46,6 +46,7 @@ namespace SquareChaser
         new SoundPlayer speedSound = new SoundPlayer(Properties.Resources.speedSound);
         new SoundPlayer pointSound = new SoundPlayer(Properties.Resources.pointSound);
         new SoundPlayer introSound = new SoundPlayer(Properties.Resources.introSound);
+
         public squareChaser()
         {
             InitializeComponent();
@@ -97,7 +98,6 @@ namespace SquareChaser
             {
                 player2.X = player2.X + player2Speed;
             }
-
             //Make player 1 & 2 faster when they hit speed boost. 
             if (player1.IntersectsWith(speedCircle) && player1Speed < 8)
             {
@@ -113,7 +113,6 @@ namespace SquareChaser
                 speedCircle.Y = randGen.Next(this.Height);
                 speedSound.Play();
             }
-            
             //Give points and randomize spawn of point squares.
             if (player1.IntersectsWith(pointSquare))
             {
@@ -131,7 +130,6 @@ namespace SquareChaser
                 player2ScoreLabel.Text = $"{player2Score}";
                 pointSound.Play();
             }
-
             //Check for a winner and stop the game.
             if (player1Score == 5)
             {
